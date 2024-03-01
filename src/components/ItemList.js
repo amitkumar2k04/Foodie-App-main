@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "../Redux/cartSlice";
 
 const ItemList = ({ items }) => {
+  // console.log(items);
   const dispatch = useDispatch();
   const handleAddIteam = (item) => {
     // Dispatch an action

@@ -4,10 +4,14 @@ import { useParams } from "react-router-dom";
 import { useRestaurantMenu } from "../utils/useRestaurantMenu";
 import { FaStar } from "react-icons/fa";
 import RestaurantCategory from "./RestaurantCategory";
+import { useState } from "react";
 
 const RestaurantMenu = () => {
   const { resId } = useParams();
   const restaurantInfo = useRestaurantMenu(resId);
+
+  const [showIndex, setShowIndex] = useState(null);
+
   if (restaurantInfo === null) return <ShimmerUi />;
   
   const {
@@ -20,6 +24,7 @@ const RestaurantMenu = () => {
   } = (restaurantInfo?.cards[2]?.card?.card?.info) || {};
 
   const { itemCards } = (restaurantInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards[3]?.card?.card)  || {};
+  console.log(restaurantInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards[3]?.card?.card);
 
   const categories = (restaurantInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards.filter((c) => c.card?.card?.["@type"] === "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory"))
 
@@ -71,7 +76,7 @@ const RestaurantMenu = () => {
   //       ))}
   //     </div>
   //   </>
-  // );/
+  // );
 
   return (
     <div className="text-center">
@@ -79,12 +84,18 @@ const RestaurantMenu = () => {
       <p className="font-bold text-lg">{cuisines.join(",")} - {costForTwoMessage} </p>
       {/* <h3>{costForTwoMessage}</h3> */}
       {/* <h2>Menu</h2> */}
+      {/* Categories accordins */}
       {categories.map((category) => (
-          <RestaurantCategory data = {category?.card?.card}/>
+          <RestaurantCategory key={category?.card?.card?.title} data = {category?.card?.card}
+
+        // showItems={false}
+        // showItem={index === 0 && true}
+        showItems={index === showIndex ? true : false}
+        setShowIndex = {() => setShowIndex(index)}
+          
+          
+          />
         ))}
-
-
-
     </div>
   );
 };

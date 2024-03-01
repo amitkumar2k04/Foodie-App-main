@@ -1,15 +1,16 @@
 import { FaAngleDown } from "react-icons/fa";
 import ItemList from "./ItemList";
-import { useState } from "react";
 
-const RestaurantCategory = ({ data }) => {
-  const [showItem, setShowItem] = useState(false);
-  const handleClick = () => {
-    setShowItem(!showItem);
-  };
+const RestaurantCategory = ({ data, showItems, setShowIndex }) => {
+  setShowIndex(!showItems);
+  // console.log(data);
+  // const [showItem, setShowItem] = useState(false);
+  // const handleClick = () => {
+  //   setShowItem(!showItem);
+  // };
   return (
     <div className="">
-      {/* Accordion Header */}
+      {/* Creating Accordion Header */}
       <div className=" mx-auto my-5 items-center md:w-9/12 bg-gray-50 shadow-lg md:p-4">
         <div
           className="flex justify-between cursor-pointer"
@@ -22,8 +23,8 @@ const RestaurantCategory = ({ data }) => {
             <FaAngleDown />
           </span>
         </div>
-        {/* Body */}
-        {showItem && <ItemList items={data?.itemCards} />}
+        {/* For Accordian Body we created another component i.e. ItemList*/}
+        {showItems && <ItemList items={data?.itemCards} />}
       </div>
     </div>
   );
