@@ -1,19 +1,17 @@
-import { IMG_CDN_URL } from "../utils/constants";
 import ShimmerUi from "./ShimmerUi";
 import { useParams } from "react-router-dom";
 import { useRestaurantMenu } from "../utils/useRestaurantMenu";
-import { FaStar } from "react-icons/fa";
 import RestaurantCategory from "./RestaurantCategory";
 import { useState } from "react";
 
 const RestaurantMenu = () => {
   const { resId } = useParams();
-  const restaurantInfo = useRestaurantMenu(resId);
+  const resInfo = useRestaurantMenu(resId);
 
   const [showIndex, setShowIndex] = useState(null);
 
-  if (restaurantInfo === null) return <ShimmerUi />;
-  
+  if (resInfo === null) return <ShimmerUi />;
+
   const {
     name,
     cuisines,
@@ -21,13 +19,20 @@ const RestaurantMenu = () => {
     costForTwoMessage,
     totalRatingsString,
     avgRatingString,
-  } = (restaurantInfo?.cards[2]?.card?.card?.info) || {};
+  } = resInfo?.cards?.[0]?.card?.card?.info || {};
+  // console.log(resInfo);
 
-  const { itemCards } = (restaurantInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards[3]?.card?.card)  || {};
-  console.log(restaurantInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards[3]?.card?.card);
+  const { itemCards } =
+    resInfo?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards[3]?.card
+      ?.card || {};
+  // console.log(restaurantInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards[3]?.card?.card);
 
-  const categories = (restaurantInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards.filter((c) => c.card?.card?.["@type"] === "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory"))
-
+  const categories =
+    resInfo?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards.filter(
+      (c) =>
+        c.card?.card?.["@type"] ===
+        "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory"
+    );
 
   // return (
   //   <>
@@ -51,7 +56,7 @@ const RestaurantMenu = () => {
 
   //         <div className=" flex md:flex-col md:h-20 gap-1 md:border rounded-xl md:px-3 md:items-center md:pt-3">
   //           <div
-  //             className={`flex items-center md:gap-2 font-bold text-sm px-1 rounded w-fit 
+  //             className={`flex items-center md:gap-2 font-bold text-sm px-1 rounded w-fit
   //       ${
   //         avgRatingString >= 4
   //           ? " bg-slate-200 text-green-600"
@@ -81,21 +86,21 @@ const RestaurantMenu = () => {
   return (
     <div className="text-center">
       <h1 className="font-bold my-6 text-2xl">{name}</h1>
-      <p className="font-bold text-lg">{cuisines.join(",")} - {costForTwoMessage} </p>
+      <p className="font-bold text-lg">
+        {cuisines.join(",")} - {costForTwoMessage}{" "}
+      </p>
       {/* <h3>{costForTwoMessage}</h3> */}
       {/* <h2>Menu</h2> */}
       {/* Categories accordins */}
-      {categories.map((category) => (
-          <RestaurantCategory key={category?.card?.card?.title} data = {category?.card?.card}
-
-        // showItems={false}
-        // showItem={index === 0 && true}
-        showItems={index === showIndex ? true : false}
-        setShowIndex = {() => setShowIndex(index)}
-          
-          
-          />
-        ))}
+      {categories?.map((category, index) => (
+        // Controlled Component
+        <RestaurantCategory
+          key={categories?.card?.card?.title}
+          data={category?.card?.card}
+          showItems={index === showIndex ? true : false}
+          setShowIndex={() => setShowIndex(index)}
+        />
+      ))}
     </div>
   );
 };

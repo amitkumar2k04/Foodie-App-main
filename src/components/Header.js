@@ -3,10 +3,11 @@ import logo from "../Assets/logo.png";
 import { FaShoppingCart } from "react-icons/fa";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import useOnlineStatus from "../utils/useOnlineStatus";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const Header = () => {
   const cartItems = useSelector((store) => store.cart.items);
+  // console.log(cartItems);
   const [btnNameReact, setBtnNameReact] = useState("Login");
   const onlineStatus = useOnlineStatus("Login");
   return (

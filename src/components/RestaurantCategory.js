@@ -2,12 +2,12 @@ import { FaAngleDown } from "react-icons/fa";
 import ItemList from "./ItemList";
 
 const RestaurantCategory = ({ data, showItems, setShowIndex }) => {
-  setShowIndex(!showItems);
+  // setShowIndex(!showItems);
   // console.log(data);
   // const [showItem, setShowItem] = useState(false);
-  // const handleClick = () => {
-  //   setShowItem(!showItem);
-  // };
+  const handleClick = () => {
+    setShowIndex();
+  };
   return (
     <div className="">
       {/* Creating Accordion Header */}
